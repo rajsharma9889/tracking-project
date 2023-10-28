@@ -1,0 +1,134 @@
+#map {
+    width: 100%;
+    height: 480px;
+}
+
+.star {
+    color: red;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.lab {
+    font-weight: 700 !important;
+}
+
+/* Assign full width inputs*/
+input[type=text],
+input[type=number],
+input[type=date] {
+    width: 100%;
+    padding: 12px 40px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    border-radius: 4px;
+    font-size: small;
+}
+
+input[type=text] {
+    font-size: small;
+}
+
+.fonbtn {
+    position: relative;
+
+}
+
+.fonbtn i {
+    position: absolute;
+    left: 17px;
+    top: 25px;
+    color: white;
+}
+
+.fa {
+    border-radius: 2px;
+    padding: 5px;
+    margin: -7px 12px;
+    color: white;
+    background-color: transparent;
+}
+
+.fontuser {
+    position: relative;
+}
+
+.fontuser i {
+    position: absolute;
+    left: 9px;
+    top: 54px;
+    color: gray;
+}
+
+.fa {
+    border-radius: 2px;
+    padding: 5px;
+    margin: -7px 12px;
+    color: white;
+}
+
+.fontselect {
+    position: relative;
+}
+
+.fontselect i {
+    position: absolute;
+    left: 9px;
+    top: 53px;
+    color: gray;
+    background-color: white;
+}
+
+.fontselect select {
+    width: 100%;
+    padding: 12px 40px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 0px solid #ccc;
+    box-sizing: border-box;
+    border-radius: 4px;
+}
+
+.fontuser textarea {
+    border-radius: 4px;
+}
+
+.fontlogin {
+    position: relative;
+}
+
+.fontlogin i {
+    position: absolute;
+    left: -7px;
+    top: 16px;
+    color: gray;
+}
+
+.fontpassword {
+    position: relative;
+}
+
+.fontpassword i {
+    position: absolute;
+    left: -7px;
+    top: 33px;
+    color: gray;
+}
+
+.btn-sm {
+    padding: 8px 14px;
+    line-height: 16px;
+    font-size: 11px;
+    color: snow;
+    background-color: #33b633;
+}
+
+.fontview {
+    position: absolute;
+    left: 37px;
+    top: 29px;
+    color: #01a9ac;
+    background-color: white;
+}

@@ -1,0 +1,99 @@
+.card {
+    padding: 40px;
+    width: 100%;
+}
+
+.content-wrapper {
+    overflow-y: auto;
+}
+
+.scroll {
+    overflow-x: auto;
+}
+
+.active {
+    background-color: #33b633;
+    border-radius: 2px;
+    padding: 5px;
+    margin: 0 3px;
+    color: white;
+}
+
+.inactive {
+    background-color: red;
+    padding: 5px;
+    color: white;
+    border-radius: 2px;
+    margin: 0 3px;
+}
+
+.active-pills {
+    color: white;
+    margin: 2px;
+    background-color: #33b633;
+    border-radius: 10px;
+    width: 68px;
+    text-align: center;
+    height: 18px;
+    font-size: 12px;
+}
+
+.inactive-pills {
+    color: white;
+    margin: 2px;
+    background-color: red;
+    border-radius: 10px;
+    width: 68px;
+    text-align: center;
+    height: 18px;
+    font-size: 12px;
+}
+
+.square {
+    background-color: #277FB2;
+    padding: 5px;
+    color: white;
+    border-radius: 2px;
+}
+
+.pic {
+    padding-top: ;
+}
+
+.modal-content {
+    border-radius: 5px !important;
+}
+
+.model-btn {
+    background-image: linear-gradient(90deg, #07885b, #0df3a3);
+    color: snow;
+    border-radius: 3px;
+    width: 100%;
+    border: none !important;
+}
+
+.denbtn{
+    background-color: #67c4e6;
+    color: snow;
+}
+
+.table_head {
+    background-color: #67c4e6;
+    color: snow;
+}
+
+.image-input {
+    margin-top: 7px;
+}
+
+.font h4 {
+    font-size: 1.2rem;
+}
+
+.view {
+    font-size: 20px;
+}
+
+.sup {
+    border: red 2px ridge;
+}
