@@ -87,7 +87,7 @@
                                 </div>
                                 <div class="form-group col-12">
                                     <label class="lab">Image. <span class="star">★</span></label>
-                                    <input type="file" name="image" class="form-control" style="padding: 11px 22px; margin: 2px 0;" autocomplete="off" required value="<?= $sales_person_update->image; ?>" />
+                                    <input type="file" name="image" class="form-control" style="padding: 11px 22px; margin: 2px 0;" autocomplete="off" value="<?= $sales_person_update->image; ?>" />
                                 </div>
 
                                 <div class="form-group">

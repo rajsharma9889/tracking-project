@@ -8,7 +8,6 @@
   <title><?php echo $page_title . "। Sub Admin"; ?></title>
   <link rel="icon" href="" type="image/png" sizes="16x16">
   <link rel="shortcut icon" href="<?php echo base_url('assets/images/demo.png'); ?>">
-  <!-- <?php include "alert.php"; ?> -->
   <?php require(APPPATH . '/views/header_link.php'); ?>
 
 </head>
@@ -31,6 +30,7 @@
   <div class="content-wrapper">
 
     <?php include $page_name . ".php"; ?>
+    <?php include "ajax_model.php"; ?>
   </div>
 
   <?php require(APPPATH . '/views/footer_link.php'); ?>
@@ -83,6 +83,51 @@
     </div>
   </div>
 </div>
+
+<!-- Ajax Modal Start -->
+<div class="modal fade" id="show_ajax_modal" tabindex="-1" role="dialog" aria-labelledby="show_ajax_modal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button onclick="closeModal()" type="button" class="close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="card-body">
+        <div id="ajax_response"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Ajax Modal End -->
+
+
+<script>
+  function ajax_modal(url, id, element, param1 = '', param2 = '') {
+    var original_content = element.innerHTML;
+    element.innerHTML = '<div class="spinner-border spinner-border-sm" role="status"><span class="sr-only">Loading...</span></div>';
+    element.style.cursor = "no-drop";
+    $.ajax({
+      url: "<?= base_url() ?>" + url,
+      method: "POST",
+      data: {
+        id: id,
+        param1: param1,
+        param2: param2
+      },
+      success: function(res) {
+        $("#ajax_response").html(res);
+        $('#show_ajax_modal').modal('show');
+        element.innerHTML = original_content;
+        element.style.cursor = "pointer";
+      }
+    });
+  }
+
+  function closeModal() {
+    $('#show_ajax_modal').modal('hide');
+  }
+</script>
 
 <?php if (!empty($this->session->flashdata('success'))) {
   $get_session = $this->session->flashdata('success');

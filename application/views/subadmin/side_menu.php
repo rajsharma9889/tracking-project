@@ -76,5 +76,29 @@
                         <i class="mdi mdi-bank menu-icon"></i>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?php echo base_url('subadmin/shop_list'); ?>">
+                        <span class="menu-title">Shop List</span>
+                        <i class="mdi mdi-account menu-icon"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?php echo base_url('subadmin/order_list'); ?>">
+                        <span class="menu-title">Order List</span>
+                        <i class="mdi mdi-account menu-icon"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?php echo base_url('subadmin/comptiter_List'); ?>">
+                        <span class="menu-title">Comptiter Box</span>
+                        <i class="mdi mdi-account menu-icon"></i>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<?php echo base_url('subadmin/message_box'); ?>">
+                        <span class="menu-title">Message Box</span>
+                        <i class="mdi mdi-account menu-icon"></i>
+                    </a>
+                </li>
             </ul>
         </nav>

@@ -37,6 +37,8 @@
                     <tr>
                         <th>S no.</th>
                         <th>Date</th>
+                        <th>Lunch Start Time</th>
+                        <th>Lunch End Time</th>
                         <th>Punch IN Time</th>
                         <th>Punch IN Address</th>
                         <th>Punch IN Image</th>
@@ -50,31 +52,26 @@
                 <tbody>
                     <?php $i = 1;
                     foreach ($data->result() as $row) :
-                        $get_location = $this->db->order_by('time', 'desc')->get_where('location', array('date' => $row->in_date, 'user_id' => $row->user_id));
-                        $lineCoordinates = array();
-                        if ($get_location->num_rows() > 0) {
-                            foreach ($get_location->result() as $row_item) {
-                                $lineCoordinates[] = array('lat' => floatval($row_item->lattitude), 'lng' => floatval($row_item->longitude));
-                            }
-                        }
-                        $distanceCalculate = array_sum(distanceTravel($lineCoordinates));
-                        if ($distanceCalculate > 1000) {
-                            $distanceCalculateKm = $distanceCalculate / 1000 . ' Km';
-                        } else {
-                            $distanceCalculateKm = $distanceCalculate . ' M';
-                        }
+                        $get_location = $this->db->order_by('id', 'desc')->get_where('location', array('user_id' => $row->user_id, 'date' => $row->in_date));
+                        $cordinate_array = array_map(function ($query) {
+                            return [
+                                $query['lattitude'], $query['longitude']
+                            ];
+                        }, $get_location->result_array());
                     ?>
                         <tr>
                             <td><?= $i++; ?></td>
                             <td><?= $row->in_date; ?></td>
+                            <td><?= $row->lunch_start_time; ?></td>
+                            <td><?= $row->lunch_end_time; ?></td>
                             <td><?= $row->in_time; ?></td>
                             <td><?= $row->punch_in_address; ?></td>
-                            <td><img src="<?= base_url($row->punch_in_image); ?>" alt="image"></td>
+                            <td><a href="<?= base_url($row->punch_in_image); ?>" target="_blank"><img src="<?= base_url($row->punch_in_image); ?>" alt="image"></a></td>
                             <td><?= $row->out_time; ?></td>
                             <td><?= $row->punch_out_address; ?></td>
-                            <td><img src="<?= base_url($row->punch_out_image); ?>" alt="image"></td>
-                            <td><?= $distanceCalculateKm; ?></td>
-                            <td><a href="<?= base_url('subadmin/track_location?sales_person=' . $row->user_id . '&start_date=' . $row->in_date . '&end_date=' . $row->in_date . '&filter='); ?>"><i class="square fa-solid fa-location click" data-toggl="tooltip" data-placement="top" title="Location Path"></i></a></td>
+                            <td><a href="<?= base_url($row->punch_out_image); ?>" target="_blank"></a><img src="<?= base_url($row->punch_out_image); ?>" alt="image"></a></td>
+                            <td><?= calculateTotalDistance($cordinate_array) ?></td>
+                            <td><a href="<?= base_url('subadmin/geofencing?user_id=' . $row->user_id . '&start_date=' . $row->in_date . '&end_date=' . $row->in_date . '&filter='); ?>"><i class="square fa-solid fa-location click" data-toggl="tooltip" data-placement="top" title="Location Path"></i></a></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

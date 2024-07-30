@@ -179,34 +179,44 @@ class Admin extends CI_Controller
         if (!$this->session->userdata('login') == 1) {
             redirect(base_url() . 'login/admin', 'refresh');
         }
+
         $submit = $this->input->post('submit');
-        $mobile = $this->input->post("mobile");
-        $email = $this->input->post("email");
-        $is_unique = $this->db->get_where('sales_person', array('mobile' => $mobile));
-        if ($is_unique->num_rows() > 0) {
-            $this->session->set_flashdata('alert', 'Mobile No. Already Exist');
-            redirect(base_url() . 'admin/add_sale_person', 'refresh');
-        }
-        $is_email = $this->db->get_where('sales_person', array('email' => $email));
-        if ($is_email->num_rows() > 0) {
-            $this->session->set_flashdata('alert', 'Email Already Exist');
-            redirect(base_url() . 'admin/add_sale_person', 'refresh');
-        } else {
-            if (isset($submit)) {
-                $data = array(
-                    'name' => $this->input->post('name'),
-                    'email' => $this->input->post('email'),
-                    'password' => $this->input->post('password'),
-                    'mobile' => $this->input->post('mobile'),
-                    'image' => do_upload('assets/images/', 'image', 'jpg|jpeg|png'),
-                    'designation_id' => $this->input->post('designation_id'),
-                    'user_id' => $this->input->post('user_id'),
-                );
-                $this->Crud_model->insert('sales_person', $data);
-                $this->session->set_flashdata('success', 'Sales Person Add Successful!!');
-                redirect(base_url() . 'admin/sale_person', 'refresh');
+
+        if (isset($submit)) {
+            $name = $this->input->post("name");
+            $email = $this->input->post("email");
+            $mobile = $this->input->post("mobile");
+            $password = $this->input->post("password");
+            $designation_id = $this->input->post("designation_id");
+            $user_id = $this->input->post("user_id");
+
+            $is_unique = $this->db->get_where('sales_person', array('mobile' => $mobile));
+            if ($is_unique->num_rows() > 0) {
+                $this->session->set_flashdata('alert', 'Mobile No. Already Exist');
+                redirect(base_url() . 'admin/add_sale_person', 'refresh');
             }
+
+            $is_email = $this->db->get_where('sales_person', array('email' => $email));
+            if ($is_email->num_rows() > 0) {
+                $this->session->set_flashdata('alert', 'Email Already Exist');
+                redirect(base_url() . 'admin/add_sale_person', 'refresh');
+            }
+
+            $data = array(
+                'name' => $name,
+                'email' => $email,
+                'password' => password_hash($password, PASSWORD_DEFAULT),
+                'mobile' => $mobile,
+                'image' => do_upload('assets/images/', 'image', 'jpg|jpeg|png'),
+                'designation_id' => $designation_id,
+                'user_id' => $user_id,
+            );
+
+            $this->Crud_model->insert('sales_person', $data);
+            $this->session->set_flashdata('success', 'Sales Person Add Successful!!');
+            redirect(base_url() . 'admin/sale_person', 'refresh');
         }
+
         $page_data['user'] = $this->Crud_model->fetch('users', array('status' => 0))->result();
         $page_data['designation'] = $this->Crud_model->fetch('designation', array('status' => 0))->result();
         $page_data['sales_person'] = $this->Crud_model->fetch('sales_person', array('status' => 0))->result();
@@ -222,19 +232,30 @@ class Admin extends CI_Controller
             redirect(base_url() . 'login/admin', 'refresh');
         }
 
-        $submit = $this->input->post('submit');
-        $mobile = $this->input->post("mobile");
-        $email = $this->input->post("email");
         if (isset($submit)) {
+            $name = $this->input->post("name");
+            $email = $this->input->post("email");
+            $mobile = $this->input->post("mobile");
+            $password = $this->input->post("password");
+            $designation_id = $this->input->post("designation_id");
+            $user_id = $this->input->post("user_id");
+
             $data = array(
-                'name' => $this->input->post('name'),
-                'email' => $this->input->post('email'),
-                'password' => $this->input->post('password'),
-                'mobile' => $this->input->post('mobile'),
-                'image' => do_upload('assets/images/', 'image', 'jpg|jpeg|png'),
-                'designation_id' => $this->input->post('designation_id'),
-                'user_id' => $this->input->post('user_id'),
+                'name' => $name,
+                'email' => $email,
+                'mobile' => $mobile,
+                'designation_id' => $designation_id,
+                'user_id' => $user_id,
             );
+
+            if (isset($password)) {
+                $data['password'] = password_hash($password, PASSWORD_DEFAULT);
+            }
+
+            if (isset($_FILES['image']['name'])) {
+                $data['image'] = do_upload('assets/images/', 'image', 'jpg|jpeg|png');
+            }
+
             $mobile_verify = $this->db->where_not_in('id', $id)->where('mobile', $mobile)->get('sales_person');
             $email_verify = $this->db->where_not_in('id', $id)->where('email', $email)->get('sales_person');
 
@@ -246,10 +267,12 @@ class Admin extends CI_Controller
                 $this->session->set_flashdata('alert', 'Email Already Exist');
                 redirect(base_url() . 'admin/sale_person', 'refresh');
             }
+
             $this->Crud_model->update('sales_person', 'id', $id, $data);
             $this->session->set_flashdata('success', 'Data update Successful!!');
             redirect(base_url() . 'admin/sale_person', 'refresh');
         }
+
         $page_data['sales_person_update'] = $this->Crud_model->fetch('sales_person', array("id" => $id))->row();
         $page_data['user'] = $this->Crud_model->fetch('users', array('status' => 0))->result();
         $page_data['designation'] = $this->Crud_model->fetch('designation', array('status' => 0))->result();
@@ -438,6 +461,90 @@ class Admin extends CI_Controller
         $this->load->view('templete', $page_data);
     }
 
+    public function shop_list($param1 = "")
+    {
+        if (!$this->session->userdata('login') == 1) {
+            redirect(base_url() . 'login/admin', 'refresh');
+        }
+
+        if ($param1 == null) {
+            $page_data['get_table'] = $this->Crud_model->fetch('shop_list', 'desc')->result();
+            $page_data['page_title'] = "All Shop List";
+        } else {
+            $page_data['page_title'] = "Sales Person Shop List";
+            $page_data['get_table'] = $this->Crud_model->fetch('shop_list', array('sales_person_id' => $param1), 'desc')->result();
+        }
+
+        $page_data['page_name'] = "shop_list";
+        $this->load->view('templete', $page_data);
+    }
+
+    public function order_list($param1 = "")
+    {
+        if (!$this->session->userdata('login') == 1) {
+            redirect(base_url() . 'login/admin', 'refresh');
+        }
+
+        if ($param1 == null) {
+            $page_data['get_table'] = $this->Crud_model->fetch('orders', 'desc')->result();
+            $page_data['page_title'] = "All Order List";
+        } else {
+            $page_data['page_title'] = "Sales Person Order List";
+            $page_data['get_table'] = $this->Crud_model->fetch('orders', array('sales_person_id' => $param1), 'desc')->result();
+        }
+
+        $page_data['page_name'] = "order_list";
+        $this->load->view('templete', $page_data);
+    }
+
+    public function comptiter_List($param1 = "")
+    {
+        if (!$this->session->userdata('login') == 1) {
+            redirect(base_url() . 'login/admin', 'refresh');
+        }
+
+        if ($param1 == null) {
+            $page_data['get_table'] = $this->Crud_model->fetch('comptiter_box', 'desc')->result();
+            $page_data['page_title'] = "All Comptiter List";
+        } else {
+            $page_data['page_title'] = "Sales Comptiter Order List";
+            $page_data['get_table'] = $this->Crud_model->fetch('comptiter_box', array('sales_person_id' => $param1), 'desc')->result();
+        }
+
+        $page_data['page_name'] = "comptiter_List";
+        $this->load->view('templete', $page_data);
+    }
+
+    public function message_box()
+    {
+        if (!$this->session->userdata('login') == 1) {
+            redirect(base_url() . 'login/admin', 'refresh');
+        }
+
+        $delete_id = $this->input->get('delete_id');
+        if (isset($delete_id)) {
+            $this->Crud_model->delete('notification', $delete_id);
+            $this->session->set_flashdata('success', 'Message Deleted Successful!!');
+            redirect(base_url() . 'admin/message_box ', 'refresh');
+        }
+
+        $submit = $this->input->post('submit');
+        if (isset($submit)) {
+            $insert_data['user_type'] = '1';
+            $insert_data['user_id'] = '1';
+            $insert_data['msg'] = $this->input->post('msg');
+            $insert_data['created_at'] = date('Y-m-d H:i:s');
+            $this->Crud_model->insert('notification', $insert_data);
+            $this->session->set_flashdata('success', 'Message Created Successful!!');
+            redirect(base_url('admin/message_box'), 'refresh');
+        }
+
+        $page_data['get_table'] = $this->Crud_model->fetch('notification', 'desc')->result();
+        $page_data['page_title'] = "Message List";
+        $page_data['page_name'] = "message_box";
+        $this->load->view('templete', $page_data);
+    }
+
     public function inactive_designation()
     {
         if (!$this->session->userdata('login') == 1) {
@@ -488,6 +595,46 @@ class Admin extends CI_Controller
         $page_data['sp_data'] = $this->Crud_model->fetch('sales_person', array('id' => $user_id));
         $page_data['page_title'] = "Attendance";
         $page_data['page_name'] = "attendance";
+        $this->load->view('templete', $page_data);
+    }
+
+    public function geofencing()
+    {
+        $start_date = $this->input->get('start_date');
+        $end_date = $this->input->get('end_date');
+        $user_id = $this->input->get('user_id');
+
+        if (isset($_GET['true'])) {
+
+            $get_location = $this->db->order_by('id', 'desc')->get_where('location', array('user_id' => $user_id, 'date >=' => $start_date ?? date('Y-m-d'), 'date <=' => $end_date ?? date('Y-m-d')));
+
+            $location_array = [];
+            $cordinates = [];
+
+            foreach ($get_location->result() as $row) {
+                $location_array[] = [
+                    'lat' => $row->lattitude,
+                    'lng' => $row->longitude,
+                    'id' => $row->id,
+                    'type' => $row->type,
+                    'date' => $row->date,
+                    'time' => $row->time,
+                    'battery_percentage' => $row->battery_percentage,
+                ];
+
+                $cordinates[] = [
+                    $row->lattitude, $row->longitude
+                ];
+            }
+
+            echo json_encode(['status' => true, 'data' => $location_array, 'distance' => calculateTotalDistance($cordinates)], true);
+            exit;
+        }
+
+        $page_data['get_sales_person'] = $this->Crud_model->fetch('sales_person', array('id' => $user_id));
+        $page_data['get_attendance'] = $this->Crud_model->fetch('attendance', array('user_id' => $user_id, 'in_date' => date('Y-m-d')));
+        $page_data['page_title'] = "Geofencing";
+        $page_data['page_name'] = "google_map";
         $this->load->view('templete', $page_data);
     }
 

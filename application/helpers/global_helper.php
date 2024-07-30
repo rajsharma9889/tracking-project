@@ -98,37 +98,83 @@ function last_query()
     return $result;
 }
 
-function calculateDistance($lat1, $lon1, $lat2, $lon2)
+// function calculateDistance($lat1, $lon1, $lat2, $lon2)
+// {
+//     $earthRadius = 6371; // Radius of the Earth in kilometers
+//     $dLat = ($lat2 - $lat1) * (pi() / 180);
+//     $dLon = ($lon2 - $lon1) * (pi() / 180);
+
+//     $a = sin($dLat / 2) * sin($dLat / 2) +
+//         cos(($lat1) * (pi() / 180)) * cos(($lat2) * (pi() / 180)) *
+//         sin($dLon / 2) * sin($dLon / 2);
+
+//     $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+//     $distance = $earthRadius * $c * 1000;
+
+//     return $distance;
+// }
+
+// function distanceTravel($lineCoordinates)
+// {
+//     // get distance
+//     $distances = [];
+//     $count = count($lineCoordinates);
+//     for ($i = 0; $i < $count - 1; $i++) {
+//         $coord1 = $lineCoordinates[$i];
+//         $coord2 = $lineCoordinates[$i + 1];
+//         $distance = calculateDistance(
+//             $coord1['lat'],
+//             $coord1['lng'],
+//             $coord2['lat'],
+//             $coord2['lng']
+//         );
+//         $distances[] = number_format($distance, 2);
+//     }
+//     return $distances;
+// }
+
+function haversineGreatCircleDistance($latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo, $earthRadius = 6371)
 {
-    $earthRadius = 6371; // Radius of the Earth in kilometers
-    $dLat = ($lat2 - $lat1) * (pi() / 180);
-    $dLon = ($lon2 - $lon1) * (pi() / 180);
+    $latFrom = deg2rad($latitudeFrom);
+    $lonFrom = deg2rad($longitudeFrom);
+    $latTo = deg2rad($latitudeTo);
+    $lonTo = deg2rad($longitudeTo);
 
-    $a = sin($dLat / 2) * sin($dLat / 2) +
-        cos(($lat1) * (pi() / 180)) * cos(($lat2) * (pi() / 180)) *
-        sin($dLon / 2) * sin($dLon / 2);
+    $latDelta = $latTo - $latFrom;
+    $lonDelta = $lonTo - $lonFrom;
 
-    $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
-    $distance = $earthRadius * $c * 1000;
-
-    return $distance;
+    $angle = 2 * asin(sqrt(pow(sin($latDelta / 2), 2) +
+        cos($latFrom) * cos($latTo) * pow(sin($lonDelta / 2), 2)));
+    return $angle * $earthRadius;
 }
 
-function distanceTravel($lineCoordinates)
+function calculateTotalDistance($coordinates)
 {
-    // get distance
-    $distances = [];
-    $count = count($lineCoordinates);
-    for ($i = 0; $i < $count - 1; $i++) {
-        $coord1 = $lineCoordinates[$i];
-        $coord2 = $lineCoordinates[$i + 1];
-        $distance = calculateDistance(
-            $coord1['lat'],
-            $coord1['lng'],
-            $coord2['lat'],
-            $coord2['lng']
-        );
-        $distances[] = number_format($distance, 2);
+    $totalDistance = 0;
+
+    for ($i = 0; $i < count($coordinates) - 1; $i++) {
+        $latitudeFrom = $coordinates[$i][0];
+        $longitudeFrom = $coordinates[$i][1];
+        $latitudeTo = $coordinates[$i + 1][0];
+        $longitudeTo = $coordinates[$i + 1][1];
+
+        $distance = haversineGreatCircleDistance($latitudeFrom, $longitudeFrom, $latitudeTo, $longitudeTo);
+        $totalDistance += $distance;
     }
-    return $distances;
+
+    return number_format($totalDistance, 4) . ' Kilometers (km)';
+}
+
+function getAddressFromLatLong($latitude, $longitude, $apiKey = "")
+{
+    $url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longitude&key=$apiKey";
+
+    $response = file_get_contents($url);
+    $json = json_decode($response, true);
+
+    if ($json['status'] == 'OK') {
+        return $json['results'][0]['formatted_address'];
+    } else {
+        return "Address not found";
+    }
 }

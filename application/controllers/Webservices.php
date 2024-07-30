@@ -99,5 +99,117 @@ class Webservices extends REST_Controller
         }
         $this->response($result_final);
     }
+
+    public function create_shop_post()
+    {
+        header('Content-type: application/json');
+        $postdata = file_get_contents("php://input");
+        $request = json_decode($postdata, true);
+        $result = $this->api_model->create_shop();
+        if ($result['status'] == '1') {
+            $result_final = $result;
+        } else {
+            $result_final = $result;
+        }
+        $this->response($result_final);
+    }
+    
+    public function get_shop_post()
+    {
+        header('Content-type: application/json');
+        $postdata = file_get_contents("php://input");
+        $request = json_decode($postdata, true);
+        $result = $this->api_model->get_shop();
+        if ($result['status'] == '1') {
+            $result_final = $result;
+        } else {
+            $result_final = $result;
+        }
+        $this->response($result_final);
+    }
+    
+    public function place_order_post()
+    {
+        header('Content-type: application/json');
+        $postdata = file_get_contents("php://input");
+        $request = json_decode($postdata, true);
+        $result = $this->api_model->place_order();
+        if ($result['status'] == '1') {
+            $result_final = $result;
+        } else {
+            $result_final = $result;
+        }
+        $this->response($result_final);
+    }
+    
+    public function get_orders_post()
+    {
+        header('Content-type: application/json');
+        $postdata = file_get_contents("php://input");
+        $request = json_decode($postdata, true);
+        $result = $this->api_model->get_orders();
+        if ($result['status'] == '1') {
+            $result_final = $result;
+        } else {
+            $result_final = $result;
+        }
+        $this->response($result_final);
+    }
+    
+    public function comptiter_box_post()
+    {
+        header('Content-type: application/json');
+        $postdata = file_get_contents("php://input");
+        $request = json_decode($postdata, true);
+        $result = $this->api_model->comptiter_box();
+        if ($result['status'] == '1') {
+            $result_final = $result;
+        } else {
+            $result_final = $result;
+        }
+        $this->response($result_final);
+    }
+    
+    public function get_comptiter_post()
+    {
+        header('Content-type: application/json');
+        $postdata = file_get_contents("php://input");
+        $request = json_decode($postdata, true);
+        $result = $this->api_model->get_comptiter();
+        if ($result['status'] == '1') {
+            $result_final = $result;
+        } else {
+            $result_final = $result;
+        }
+        $this->response($result_final);
+    }
+    
+    public function get_msg_post()
+    {
+        header('Content-type: application/json');
+        $postdata = file_get_contents("php://input");
+        $request = json_decode($postdata, true);
+        $result = $this->api_model->get_msg();
+        if ($result['status'] == '1') {
+            $result_final = $result;
+        } else {
+            $result_final = $result;
+        }
+        $this->response($result_final);
+    }
+
+    public function lunch_change_status_post()
+    {
+        header('Content-type: application/json');
+        $postdata = file_get_contents("php://input");
+        $request = json_decode($postdata, true);
+        $result = $this->api_model->lunch_change_status();
+        if ($result['status'] == '1') {
+            $result_final = $result;
+        } else {
+            $result_final = $result;
+        }
+        $this->response($result_final);
+    }
     
 }

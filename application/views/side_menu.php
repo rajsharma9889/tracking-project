@@ -95,5 +95,29 @@
                             </ul>
                         </div>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?php echo base_url('admin/shop_list'); ?>">
+                            <span class="menu-title">Shop List</span>
+                            <i class="mdi mdi-account menu-icon"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?php echo base_url('admin/order_list'); ?>">
+                            <span class="menu-title">Order List</span>
+                            <i class="mdi mdi-account menu-icon"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?php echo base_url('admin/comptiter_List'); ?>">
+                            <span class="menu-title">Comptiter Box</span>
+                            <i class="mdi mdi-account menu-icon"></i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?php echo base_url('admin/message_box'); ?>">
+                            <span class="menu-title">Message Box</span>
+                            <i class="mdi mdi-account menu-icon"></i>
+                        </a>
+                    </li>
                 </ul>
             </nav>
