@@ -162,7 +162,7 @@ function calculateTotalDistance($coordinates)
         $totalDistance += $distance;
     }
 
-    return number_format($totalDistance, 4) . ' Kilometers (km)';
+    return number_format($totalDistance, 5) . ' Kilometers (km)';
 }
 
 function getAddressFromLatLong($latitude, $longitude, $apiKey = "")

@@ -62,8 +62,8 @@
                         <tr>
                             <td><?= $i++; ?></td>
                             <td><?= $row->in_date; ?></td>
-                            <td><?= $row->lunch_start_time; ?></td>
-                            <td><?= $row->lunch_end_time; ?></td>
+                            <td><?= timeFormat($row->lunch_start_time, "h:i a"); ?></td>
+                            <td><?= timeFormat($row->lunch_end_time, "h:i a"); ?></td>
                             <td><?= $row->in_time; ?></td>
                             <td><?= $row->punch_in_address; ?></td>
                             <td><a href="<?= base_url($row->punch_in_image); ?>" target="_blank"><img src="<?= base_url($row->punch_in_image); ?>" alt="image"></a></td>

@@ -238,14 +238,8 @@ class Api_model extends CI_Model
                 $lineCoordinates = array();
                 if ($get_location->num_rows() > 0) {
                     foreach ($get_location->result() as $row_item) {
-                        $lineCoordinates[] = array('lat' => floatval($row_item->lattitude), 'lng' => floatval($row_item->longitude));
+                        $lineCoordinates[] = [$row_item->lattitude, $row_item->longitude];
                     }
-                }
-                $distanceCalculate = array_sum(distanceTravel($lineCoordinates));
-                if ($distanceCalculate > 1000) {
-                    $distanceCalculateKm = $distanceCalculate / 1000 . ' Km';
-                } else {
-                    $distanceCalculateKm = $distanceCalculate . ' M';
                 }
 
                 $result_array[] = array(
@@ -265,7 +259,7 @@ class Api_model extends CI_Model
                     'in_time' => $row->in_time ?? "N/A",
                     'out_date' => $row->out_date ?? "N/A",
                     'out_time' => $row->out_time ?? "N/A",
-                    'total_travel' => $distanceCalculateKm,
+                    'total_travel' => calculateTotalDistance($lineCoordinates),
                 );
             }
         }

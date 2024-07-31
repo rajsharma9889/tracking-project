@@ -35,7 +35,7 @@
                     ?>
                         <tr>
                             <td><?= $i++; ?></td>
-                            <td><img src="<?= base_url($row->image); ?>" alt="image"></td>
+                            <td><a href="<?= base_url($row->image); ?>" target="_blank"><img src="<?= base_url($row->image); ?>" alt="image"></a></td>
                             <td><?= $row->name; ?></td>
                             <td><?= $row->mobile; ?></td>
                             <td><?= $row->email; ?></td>
